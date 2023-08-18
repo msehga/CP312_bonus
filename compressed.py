@@ -24,7 +24,7 @@ def createFrequencyTable(textPath, writePath):
             alphaDict[char.lower()] += 1
     readFile.close()
     #WRITE CHAR COUNTS TO NEW FILE
-    writeFile = open("writePath", "w+")
+    writeFile = open(writePath, "w+")
     total_entries = len(alphaDict)
     for index, (key, val) in enumerate(alphaDict.items()):
         writeFile.write(key + ":" + str(val))

@@ -24,7 +24,7 @@ def createFrequencyTable(textPath):
             alphaDict[char.lower()] += 1
     readFile.close()
     #WRITE CHAR COUNTS TO NEW FILE
-    writeFile = open("huffmanBonusAssignment/frequency.txt", "w")
+    writeFile = open("frequency.txt", "w")
     total_entries = len(alphaDict)
     for index, (key, val) in enumerate(alphaDict.items()):
         writeFile.write(key + ":" + str(val))
@@ -41,6 +41,6 @@ def createFrequencyTable(textPath):
     '''
 
 
-textFile = "C:\Users\sarap\OneDrive\Documents\1. Uni Courses\CP312\CP312_bonus\test1.txt"
+textFile = "test1.txt"
 freqTable = createFrequencyTable(textFile)
-print(tuple(freqTable.items())[97][1]) #used to print certain keys/values of alphaDict
+#print(tuple(freqTable.items())[97][1]) #used to print certain keys/values of alphaDict

@@ -82,27 +82,69 @@ def writeHuffmanCodes(codeDict,writePath):
     writeFile.close()
     return
 
+
+# def writeCompressedFile(textPath, huffmanCodes, compressedPath):
+#     with open(textPath, 'r') as textFile:
+#         with open(compressedPath, 'wb') as compressedFile:
+#             byteBuffer = ''
+#             while True:
+#                 char = textFile.read(1)
+#                 if not char:
+#                     break
+#                 # Look up the Huffman code for this character
+#                 if char.isspace():
+#                     charCode = huffmanCodes[' ']
+#                 else:
+#                     charCode = huffmanCodes.get(char.lower(), '')
+#                 byteBuffer += charCode
+#                 # Write out in chunks of 8 bits
+#                 while len(byteBuffer) >= 8:
+#                     byte = byteBuffer[:8]
+#                     byteBuffer = byteBuffer[8:]
+#                     # Convert the 8-bit string to an integer, and write as a single byte
+#                     compressedFile.write(bytes([int(byte, 2)]))
+#                     print(byte + ":" + charCode + ":" + char)
+#             # Write any remaining bits, padding with zeros if necessary
+#             if byteBuffer:
+#                 byteBuffer = byteBuffer.ljust(8, '0')
+#                 compressedFile.write(bytes([int(byteBuffer, 2)]))
+
 def writeCompressedFile(textPath, huffmanCodes, compressedPath):
+    bits = []
     with open(textPath, 'r') as textFile:
-        with open(compressedPath, 'wb') as compressedFile:
-            byteBuffer = ''
-            while True:
-                char = textFile.read(1)
-                if not char:
-                    break
-                # Look up the Huffman code for this character
+        while True:
+            char = textFile.read(1)
+            if not char:
+                break
+            if char.isspace():
+                charCode = huffmanCodes[' ']
+            else:
                 charCode = huffmanCodes.get(char.lower(), '')
-                byteBuffer += charCode
-                # Write out in chunks of 8 bits
-                while len(byteBuffer) >= 8:
-                    byte = byteBuffer[:8]
-                    byteBuffer = byteBuffer[8:]
-                    # Convert the 8-bit string to an integer, and write as a single byte
-                    compressedFile.write(bytes([int(byte, 2)]))
-            # Write any remaining bits, padding with zeros if necessary
-            if byteBuffer:
-                byteBuffer = byteBuffer.ljust(8, '0')
-                compressedFile.write(bytes([int(byteBuffer, 2)]))
+            # Add the Huffman code to the bit list
+            bits.extend([int(bit) for bit in charCode])
+
+    # Convert the bit list to a byte array
+    byteArray = bytearray()
+    for i in range(0, len(bits), 8):
+        byte = bits[i:i+8]
+        # Convert the byte list to an integer and add to the byte array
+        byteArray.append(int(''.join(map(str, byte)), 2))
+        print(byte)
+        print(char + charCode)
+        
+
+    # Write the byte array to the compressed file
+    with open(compressedPath, 'wb') as compressedFile:
+        compressedFile.write(byteArray)
+
+    #charCode should be the binary representation of the character we scanned in the text
+    #bits is the array where each element in the array represents a bit in charCode
+    #
+    
+
+        
+
+
 
 
 

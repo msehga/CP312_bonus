@@ -82,6 +82,28 @@ def writeHuffmanCodes(codeDict,writePath):
     writeFile.close()
     return
 
+def writeCompressedFile(textPath, huffmanCodes, compressedPath):
+    with open(textPath, 'r') as textFile:
+        with open(compressedPath, 'wb') as compressedFile:
+            byteBuffer = ''
+            while True:
+                char = textFile.read(1)
+                if not char:
+                    break
+                # Look up the Huffman code for this character
+                charCode = huffmanCodes.get(char.lower(), '')
+                byteBuffer += charCode
+                # Write out in chunks of 8 bits
+                while len(byteBuffer) >= 8:
+                    byte = byteBuffer[:8]
+                    byteBuffer = byteBuffer[8:]
+                    # Convert the 8-bit string to an integer, and write as a single byte
+                    compressedFile.write(bytes([int(byte, 2)]))
+            # Write any remaining bits, padding with zeros if necessary
+            if byteBuffer:
+                byteBuffer = byteBuffer.ljust(8, '0')
+                compressedFile.write(bytes([int(byteBuffer, 2)]))
+
 
 
 textFile = "test1.txt"
@@ -101,6 +123,9 @@ for bit in aValue:
 print(binNum)
 import sys
 print(sys.getsizeof(binNum))
+
+compressedFile = "compressed.bin"
+writeCompressedFile(textFile, huffmanCodes, compressedFile)
 #binNum is now 9
 #'1001' = 1009 (binary) = 9 (decimal)
 #nevermind, 9 is no longer stored as 1001, it is 

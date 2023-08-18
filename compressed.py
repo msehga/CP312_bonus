@@ -6,7 +6,7 @@ Output: dictionary containing frequency table
 
 
 '''
-def createFrequencyTable(textPath):
+def createFrequencyTable(textPath, writePath):
     #CREATE DICT TO STORE COUNT OF CHARS
     alpha = " ,.0123456789abcdefghijklmnopqrstuvwxyz"
     alphaDict = {}
@@ -24,7 +24,7 @@ def createFrequencyTable(textPath):
             alphaDict[char.lower()] += 1
     readFile.close()
     #WRITE CHAR COUNTS TO NEW FILE
-    writeFile = open("frequency.txt", "w")
+    writeFile = open("writePath", "w+")
     total_entries = len(alphaDict)
     for index, (key, val) in enumerate(alphaDict.items()):
         writeFile.write(key + ":" + str(val))
@@ -42,5 +42,6 @@ def createFrequencyTable(textPath):
 
 
 textFile = "test1.txt"
-freqTable = createFrequencyTable(textFile)
+writeFile = "frequency.txt"
+freqTable = createFrequencyTable(textFile, writeFile)
 #print(tuple(freqTable.items())[97][1]) #used to print certain keys/values of alphaDict

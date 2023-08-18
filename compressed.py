@@ -3,8 +3,6 @@ Input: string containing path for text to read
 Process: read file, update frequency table, write frequency
 table to frequency.txt, return frequency table (dictionary)
 Output: dictionary containing frequency table
-
-
 '''
 def createFrequencyTable(textPath, writePath):
     #CREATE DICT TO STORE COUNT OF CHARS
@@ -20,7 +18,7 @@ def createFrequencyTable(textPath, writePath):
             break
         if char.isspace():
             alphaDict[" "] += 1
-        elif char.lower() in alpha:
+        elif char.lower() in alphaDict:
             alphaDict[char.lower()] += 1
     readFile.close()
     #WRITE CHAR COUNTS TO NEW FILE
@@ -45,3 +43,4 @@ textFile = "test1.txt"
 writeFile = "frequency.txt"
 freqTable = createFrequencyTable(textFile, writeFile)
 #print(tuple(freqTable.items())[97][1]) #used to print certain keys/values of alphaDict
+print(freqTable)

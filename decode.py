@@ -59,7 +59,6 @@ def main(): #main function is used to run the program
     decoded_text = decoded_text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
     decoded_text = ''.join(char if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz' else ' ' for char in decoded_text)
     
- # Replace the last two characters with a period
     decoded_text = decoded_text[:-2] + "."
     with open("decoded.txt", "w") as f:
         f.write(decoded_text)

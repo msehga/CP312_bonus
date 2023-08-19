@@ -18,7 +18,7 @@ def encodeAndDecode(textFile):
     compressedFile = "compressed.bin"
     writeCompressedFile(textFile, huffmanCodes, compressedFile)
     #DECODE
-    huffman_codes = rb_codes("codes.txt")
+    huffman_codes = readCodes("codes.txt")
     huffman_tree = create_huffman_tree(huffman_codes)
     
     with open("compressed.bin", "rb") as f:

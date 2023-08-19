@@ -129,8 +129,8 @@ def writeCompressedFile(textPath, huffmanCodes, compressedPath):
         byte = bits[i:i+8]
         # Convert the byte list to an integer and add to the byte array
         byteArray.append(int(''.join(map(str, byte)), 2))
-        print(byte)
-        print(char + charCode)
+        # print(byte)
+        # print(char + charCode)
         
 
     # Write the byte array to the compressed file

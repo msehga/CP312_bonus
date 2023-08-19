@@ -1,18 +1,23 @@
 class HuffmanNode:
-    def __init__(self, char, freq):
+    def __init__(self, char, freq): # created 
         self.char = char
         self.freq = freq
         self.left = None
         self.right = None
+
+
 
 def read_codes(filename):
     huffman_codes = {}
     with open(filename, "r") as f:
         lines = f.readlines()
         for line in lines:
-            char, code = line.strip().split(':')
+            parts = line.strip().split(':')
+            char = parts[0] if parts[0] else ' ' # If the character part is empty, then it represents space
+            code = parts[1]
             huffman_codes[code] = char
     return huffman_codes
+
 
 def build_huffman_tree(huffman_codes):
     root = HuffmanNode(None, 0)
@@ -43,6 +48,8 @@ def decode_text(encoded_data, huffman_tree):
         if current_node.char is not None:
             decoded_text += current_node.char
             current_node = huffman_tree
+            if current_node.char == ' ':
+                decoded_text += ' '
 
     return decoded_text
 
@@ -57,10 +64,12 @@ def main():
     decoded_text = decode_text(encoded_data, huffman_tree)
 
     decoded_text = decoded_text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
-    decoded_text = ''.join(char.lower() if char.isalpha() else char for char in decoded_text if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz')
+    decoded_text = ''.join(char if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz' else ' ' for char in decoded_text)
 
     with open("decoded.txt", "w") as f:
         f.write(decoded_text)
 
 if __name__ == "__main__":
     main()
+
+

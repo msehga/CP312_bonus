@@ -27,7 +27,12 @@ def encodeAndDecode(textFile):
     decodedText = decodeText(encodedData, decodedHuffmanTree)
     decodedText = decodedText.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
     decodedText = ''.join(char if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz' else ' ' for char in decodedText)
-    decodedText = decodedText[:-2] + "."
+    
+    with open(textFile, 'r') as file:
+        content = file.read()
+
+    decodedText = decodedText[:-2] + " "
+
     with open("decoded.txt", "w") as f:
         f.write(decodedText)
 

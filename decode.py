@@ -1,13 +1,6 @@
-class HuffmanNode:
-    def __init__(self, char, freq): # created the huffman node.
-        self.char = char
-        self.freq = freq
-        self.left = None
-        self.right = None
+from encode import *
 
-
-
-def rb_codes(filename): # This function is used for reading the codes from codes.txt
+def readCodes(filename): # This function is used for reading the codes from codes.txt
     huffman_codes = {}
     with open(filename, "r") as f:
         lines = f.readlines()
@@ -20,17 +13,17 @@ def rb_codes(filename): # This function is used for reading the codes from codes
 
 
 def create_huffman_tree(huffman_codes): #this function reconstructs the huffman tree.
-    root = HuffmanNode(None, 0)
+    root = Node(None, 0)
     for code, char in huffman_codes.items():
         node = root
         for bit in code:
             if bit == '0':
                 if node.left is None:
-                    node.left = HuffmanNode(None, 0)
+                    node.left = Node(None, 0)
                 node = node.left
             else:
                 if node.right is None:
-                    node.right = HuffmanNode(None, 0)
+                    node.right = Node(None, 0)
                 node = node.right
         node.char = char
     return root
@@ -54,7 +47,7 @@ def decode_text(encoded_data, huffman_tree): #this function decodes the text.
     return decoded_text
 
 def main(): #main function is used to run the program
-    huffman_codes = rb_codes("codes.txt")
+    huffman_codes = readCodes("codes.txt")
     huffman_tree = create_huffman_tree(huffman_codes)
     
     with open("compressed.bin", "rb") as f:

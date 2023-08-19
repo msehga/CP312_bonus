@@ -1,20 +1,24 @@
 from encode import *
 
-def readCodes(filename): # This function is used for reading the codes from codes.txt
-    huffman_codes = {}
+# This function is used for reading the codes from codes.txt
+def readCodes(filename): 
+    huffmanCodes = {}
     with open(filename, "r") as f:
         lines = f.readlines()
         for line in lines:
             parts = line.strip().split(':')
-            char = parts[0] if parts[0] else ' ' # If the character part is empty, then it represents space
+            if parts[0]:
+                char = parts[0]
+            else:
+                char = ' '
             code = parts[1]
-            huffman_codes[code] = char
-    return huffman_codes
+            huffmanCodes[code] = char
+    return huffmanCodes
 
-
-def create_huffman_tree(huffman_codes): #this function reconstructs the huffman tree.
+# This function reconstructs the huffman tree.
+def decodeHuffmanTree(huffmanCodes): 
     root = Node(None, 0)
-    for code, char in huffman_codes.items():
+    for code, char in huffmanCodes.items():
         node = root
         for bit in code:
             if bit == '0':
@@ -28,11 +32,12 @@ def create_huffman_tree(huffman_codes): #this function reconstructs the huffman 
         node.char = char
     return root
 
-def decode_text(encoded_data, huffman_tree): #this function decodes the text.
+ # This function decodes the text.
+def decodeText(encodedData, huffmanTree):
     decoded_text = ""
-    current_node = huffman_tree
+    current_node = huffmanTree
 
-    for bit in encoded_data:
+    for bit in encodedData:
         if bit == "0":
             current_node = current_node.left
         else:
@@ -40,31 +45,11 @@ def decode_text(encoded_data, huffman_tree): #this function decodes the text.
 
         if current_node.char is not None:
             decoded_text += current_node.char
-            current_node = huffman_tree
+            current_node = huffmanTree
             if current_node.char == ' ':
                 decoded_text += ' '
 
     return decoded_text
 
-def main(): #main function is used to run the program
-    huffman_codes = readCodes("codes.txt")
-    huffman_tree = create_huffman_tree(huffman_codes)
-    
-    with open("compressed.bin", "rb") as f:
-        compressed_data = f.read()
-
-    encoded_data = "".join(format(byte, '08b') for byte in compressed_data)
-    decoded_text = decode_text(encoded_data, huffman_tree)
-
-    decoded_text = decoded_text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
-    decoded_text = ''.join(char if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz' else ' ' for char in decoded_text)
-    
-    decoded_text = decoded_text[:-2] + "."
-    with open("decoded.txt", "w") as f:
-        f.write(decoded_text)
-    
-
-if __name__ == "__main__":
-    main()
 
 

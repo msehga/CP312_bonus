@@ -2,12 +2,12 @@ from decode import *
 from encode import *
 
 def main():
-    textFile = input("What is the name of the txt file you want to encode? For example \"test1.txt\ \"\n:")
+    textFile = input("What is the name of the txt file you want to encode? \nFor example, \"test1.txt\"\n:")
     encodeAndDecode(textFile)
 
 
 def encodeAndDecode(textFile):
-    #ENCODE
+    # Encode
     writeFile = "frequency.txt"
     freqTable = createFrequencyTable(textFile, writeFile)
     huffmanTree = createHuffmanTree(freqTable)
@@ -17,23 +17,19 @@ def encodeAndDecode(textFile):
     writeHuffmanCodes(huffmanCodes, "codes.txt")
     compressedFile = "compressed.bin"
     writeCompressedFile(textFile, huffmanCodes, compressedFile)
-    #DECODE
-    huffman_codes = readCodes("codes.txt")
-    huffman_tree = create_huffman_tree(huffman_codes)
-    
+
+    # Decode
+    decodedHuffmanCodes = readCodes("codes.txt")
+    decodedHuffmanTree = decodeHuffmanTree(decodedHuffmanCodes)
     with open("compressed.bin", "rb") as f:
-        compressed_data = f.read()
-
-    encoded_data = "".join(format(byte, '08b') for byte in compressed_data)
-    decoded_text = decode_text(encoded_data, huffman_tree)
-
-    decoded_text = decoded_text.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
-    decoded_text = ''.join(char if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz' else ' ' for char in decoded_text)
-    
- # Replace the last two characters with a period
-    decoded_text = decoded_text[:-2] + "."
+        compressedData = f.read()
+    encodedData = "".join(format(byte, '08b') for byte in compressedData)
+    decodedText = decodeText(encodedData, decodedHuffmanTree)
+    decodedText = decodedText.replace('\t', ' ').replace('\n', ' ').replace('\r', ' ')
+    decodedText = ''.join(char if char in ' ,.0123456789abcdefghijklmnopqrstuvwxyz' else ' ' for char in decodedText)
+    decodedText = decodedText[:-2] + "."
     with open("decoded.txt", "w") as f:
-        f.write(decoded_text)
+        f.write(decodedText)
 
 if __name__ == "__main__":
     main()

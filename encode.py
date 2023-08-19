@@ -6,6 +6,7 @@ class Node:
         self.left = None
         self.right = None
 
+    # This is needed for sorting. Without this it won't be easy to compare Huffman tree nodes 
     def __lt__(self, other):
         return self.freq < other.freq
 
@@ -15,7 +16,8 @@ def createFrequencyTable(textPath, writePath):
     alphaDict = {}
     for char in alpha:
         alphaDict[char] = 0
-    #Read file and update count of chars
+
+    # Read file and update count of chars
     readFile = open(textPath, "r")
     while True:
         char = readFile.read(1)
@@ -26,7 +28,8 @@ def createFrequencyTable(textPath, writePath):
         elif char.lower() in alphaDict:
             alphaDict[char.lower()] += 1
     readFile.close()
-    #Write char  into the file
+
+    # Write char into the file
     writeFile = open(writePath, "w+")
     totalEntries = len(alphaDict)
     for index, (key, val) in enumerate(alphaDict.items()):
@@ -34,10 +37,10 @@ def createFrequencyTable(textPath, writePath):
         if index < totalEntries - 1:
             writeFile.write("\n")
     writeFile.close()
+
     #Sort dictionary and return 
     sortedDict = dict(sorted(alphaDict.items(), key=lambda item: item[1]))
     return sortedDict
-
 
 def createHuffmanTree(freqTable):
     queue = [Node(char, freq) for char, freq in freqTable.items()]
@@ -59,7 +62,6 @@ def createHuffmanTree(freqTable):
 
     return queue[0]  # Return the root of the Huffman Tree
 
-
 def createHuffmanCodes(root, codeDict, currentCode=''):
     if root is None:
         return
@@ -71,7 +73,6 @@ def createHuffmanCodes(root, codeDict, currentCode=''):
     createHuffmanCodes(root.left, codeDict, currentCode + '0')
     createHuffmanCodes(root.right, codeDict, currentCode + '1')
 
-
 def writeHuffmanCodes(codeDict,writePath):
     writeFile = open(writePath, "w+")
     total_entries = len(codeDict)
@@ -80,7 +81,6 @@ def writeHuffmanCodes(codeDict,writePath):
         if index < total_entries - 1:
             writeFile.write("\n")
     writeFile.close()
-    return
 
 def writeCompressedFile(textPath, huffmanCodes, compressedPath):
     bits = []
@@ -102,8 +102,6 @@ def writeCompressedFile(textPath, huffmanCodes, compressedPath):
         byte = bits[i:i+8]
         # Convert the byte list to an integer and add to the byte array
         byteArray.append(int(''.join(map(str, byte)), 2))
-        # print(byte)
-        # print(char + charCode)
         
     # Write the byte array to the compressed file
     with open(compressedPath, 'wb') as compressedFile:
